@@ -284,8 +284,19 @@ make cross
 ```sh
 cd $working_dir/kubernetes
 
+# Run all hack/update scripts
+# For faster deployment, run only relevant script:
+# hack/update-gofmt.sh (when adding new files)
+# hack/update-bazel.sh (when updating dependencies / imports)
+hack/update-all.sh
+
+# Run verification tests
+make verify
+
 # Run every unit test
 make test
+  or
+bazel test //<directory-to-test>/...
 
 # Run package tests verbosely
 make test WHAT=pkg/util/cache GOFLAGS=-v
@@ -295,6 +306,8 @@ make test-integration
 
 # Run e2e tests
 make test-e2e
+  or
+make all WHAT=test/e2e/e2e.test
 ```
 
 See the [testing guide](testing.md) and [end-to-end tests](e2e-tests.md)
